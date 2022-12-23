@@ -1,6 +1,7 @@
 import 'package:fast_food_app_lab/city.dart';
 import 'package:fast_food_app_lab/food.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,11 +31,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final controller1 = TextEditingController();
   List<Food> meals = [
-    Food(name: "Burger", url: "assets/jelo1.png", price: 10, calories: 250),
-    Food(name: "Pizza", url: "assets/jelo2.png", price: 20, calories: 350),
-    Food(name: "Rolls", url: "assets/jelo3.png", price: 30, calories: 450),
-    Food(name: "Soup", url: "assets/jelo4.png", price: 40, calories: 150),
+    Food(name: "Burger", url: "assets/jelo1.png", price: 10, calories: 250, controller: TextEditingController()),
+    Food(name: "Pizza", url: "assets/jelo2.png", price: 20, calories: 350,controller: TextEditingController()),
+    Food(name: "Rolls", url: "assets/jelo3.png", price: 30, calories: 450,controller: TextEditingController()),
+    Food(name: "Soup", url: "assets/jelo4.png", price: 40, calories: 150,controller: TextEditingController()),
   ];
   List<City> cities = [
     City(name: "Centar", distance: 1),
@@ -42,61 +44,123 @@ class _MyHomePageState extends State<MyHomePage> {
     City(name: "Radakovo", distance: 3),
     City(name: "Crkvice", distance: 4),
   ];
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
+      child: GestureDetector(
+        onTap: (){},
+        child: Scaffold(
+          body: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
               alignment: Alignment.topCenter,
-              fit: StackFit.loose,
               children: [
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height*0.4,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("assets/Reklama.png"),
-                    ),
-                  ),
+                Image.asset("assets/Reklama.png"),
+                const BasicText(
+                  text: "Zaista Brzo",
+                  textStyle: TextStyle(fontSize: 22),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Positioned(
-                    top: 0,
-                    child: Column(
-                      children: const [
-                        BasicText(
-                          text: "ZAISTA BRZO",
-                          textStyle: TextStyle(fontSize: 12),
-                        ),
-                        BasicText(
-                          text: "Narucivanje i dostava hrane",
-                          textStyle: TextStyle(fontSize: 34),
-                        ),
-                      ],
-                    ),
+                const Positioned(
+                  top: 20,
+                  child: BasicText(
+                    text: "Narucivanje i dostava hrane",
+                    textStyle: TextStyle(fontSize: 32),
                   ),
                 ),
                 Positioned(
-                  bottom: 50,
-                  child: Expanded(
+                  top: 350,
+                  child: SingleChildScrollView(
+                    
                     child: Container(
-                      width: double.maxFinite,
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                          color: Colors.amber,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
+                              topRight: Radius.circular(20),),
+                          color: Colors.white),
+                      child: Center(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(
+                            width: 50,
+                          ),
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          shrinkWrap: true,
+                          itemCount: meals.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Image.asset(
+                                  meals[index].url,
+                                  height: 30,
+                                  width: 30,
+                                ),
+                                Text(meals[index].name),
+                                Container(
+                                  height: 10,
+                                  width: 2,
+                                  color: Colors.amber,
+                                ),
+                                Text(meals[index].price.toInt().toString()),
+                                Icon(Icons.check_circle_outlined),
+                                Container(
+                                  child: TextField(
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    decoration: InputDecoration(border: OutlineInputBorder(),contentPadding: EdgeInsets.zero),
+                                    controller: meals[index].controller,
+                                  ),
+                                  height: 30,
+                                  width: 40,
+                                ),
+                                CircleAvatar(
+                                  backgroundColor: Color.fromARGB(255, 240, 165, 26),
+                                  child: Text(
+                                      meals[index].calories.toInt().toString(), style: TextStyle(color: Colors.white),),
+                                ),
+                                Text("calories"),
+                              ],
+                            );
+                          },
+                        ),
+                        // Column(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Image.asset(
+                        //       "assets/jelo1.png",
+                        //       height: 30,
+                        //       width: 30,
+                        //     ),
+                        //     Text("burger"),
+                        //     VerticalDivider(),
+                        //     Text("15"),
+                        //     Icon(Icons.check_circle_outlined),
+                        //     Container(
+                        //       child: TextField(
+                        //         readOnly: true,
+                        //       ),
+                        //       height: 30,
+                        //       width: 30,
+                        //     ),
+                        //     CircleAvatar(
+                        //       child: Text("233"),
+                        //     ),
+                        //     Text("calories"),
+                        //   ],
+                        // )
+                      ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
