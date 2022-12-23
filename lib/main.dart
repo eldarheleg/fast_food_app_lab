@@ -1,5 +1,7 @@
 import 'package:fast_food_app_lab/city.dart';
 import 'package:fast_food_app_lab/food.dart';
+import 'package:fast_food_app_lab/widgets/basic_text.dart';
+import 'package:fast_food_app_lab/widgets/list_of_meals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -31,12 +33,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final controller1 = TextEditingController();
+  bool isOff = false;
   List<Food> meals = [
-    Food(name: "Burger", url: "assets/jelo1.png", price: 10, calories: 250, controller: TextEditingController()),
-    Food(name: "Pizza", url: "assets/jelo2.png", price: 20, calories: 350,controller: TextEditingController()),
-    Food(name: "Rolls", url: "assets/jelo3.png", price: 30, calories: 450,controller: TextEditingController()),
-    Food(name: "Soup", url: "assets/jelo4.png", price: 40, calories: 150,controller: TextEditingController()),
+    Food(
+        name: "Burger",
+        url: "assets/jelo1.png",
+        price: 10,
+        calories: 250,
+        controller: TextEditingController()),
+    Food(
+        name: "Pizza",
+        url: "assets/jelo2.png",
+        price: 20,
+        calories: 350,
+        controller: TextEditingController()),
+    Food(
+        name: "Rolls",
+        url: "assets/jelo3.png",
+        price: 30,
+        calories: 450,
+        controller: TextEditingController()),
+    Food(
+        name: "Soup",
+        url: "assets/jelo4.png",
+        price: 40,
+        calories: 150,
+        controller: TextEditingController()),
   ];
   List<City> cities = [
     City(name: "Centar", distance: 1),
@@ -44,12 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
     City(name: "Radakovo", distance: 3),
     City(name: "Crkvice", distance: 4),
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(
-        onTap: (){},
+        onTap: () {},
         child: Scaffold(
           body: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -72,88 +94,62 @@ class _MyHomePageState extends State<MyHomePage> {
                 Positioned(
                   top: 350,
                   child: SingleChildScrollView(
-                    
                     child: Container(
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),),
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
                           color: Colors.white),
                       child: Center(
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 50,
+                        child: ListOfMeals(meals: meals),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 50,
+                  child: SingleChildScrollView(
+                    child: Container(
+                      height: 100,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                           ),
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          shrinkWrap: true,
-                          itemCount: meals.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          color: Colors.green),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  meals[index].url,
-                                  height: 30,
-                                  width: 30,
+                                  "assets/zvjezda.png",
+                                  height: 20,
+                                  width: 20,
                                 ),
-                                Text(meals[index].name),
-                                Container(
-                                  height: 10,
-                                  width: 2,
-                                  color: Colors.amber,
+                                Text("Dostava"),
+                                Image.asset(
+                                  "assets/zvjezda.png",
+                                  height: 20,
+                                  width: 20,
                                 ),
-                                Text(meals[index].price.toInt().toString()),
-                                Icon(Icons.check_circle_outlined),
-                                Container(
-                                  child: TextField(
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                    decoration: InputDecoration(border: OutlineInputBorder(),contentPadding: EdgeInsets.zero),
-                                    controller: meals[index].controller,
-                                  ),
-                                  height: 30,
-                                  width: 40,
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Color.fromARGB(255, 240, 165, 26),
-                                  child: Text(
-                                      meals[index].calories.toInt().toString(), style: TextStyle(color: Colors.white),),
-                                ),
-                                Text("calories"),
                               ],
-                            );
-                          },
+                            ),
+                            Text("20 mins - Besplatna dostava iznad 15 KM"),
+                            Switch(
+                                value: isOff,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isOff = value;
+                                  });
+                                })
+                          ],
                         ),
-                        // Column(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     Image.asset(
-                        //       "assets/jelo1.png",
-                        //       height: 30,
-                        //       width: 30,
-                        //     ),
-                        //     Text("burger"),
-                        //     VerticalDivider(),
-                        //     Text("15"),
-                        //     Icon(Icons.check_circle_outlined),
-                        //     Container(
-                        //       child: TextField(
-                        //         readOnly: true,
-                        //       ),
-                        //       height: 30,
-                        //       width: 30,
-                        //     ),
-                        //     CircleAvatar(
-                        //       child: Text("233"),
-                        //     ),
-                        //     Text("calories"),
-                        //   ],
-                        // )
                       ),
                     ),
                   ),
@@ -163,21 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class BasicText extends StatelessWidget {
-  const BasicText({Key? key, required this.text, required this.textStyle})
-      : super(key: key);
-  final String text;
-  final TextStyle textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: textStyle,
     );
   }
 }

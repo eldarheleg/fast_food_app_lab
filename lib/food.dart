@@ -13,4 +13,8 @@ class Food {
       required this.price,
       required this.calories,
       required this.controller});
+
+  getBasePrice(double p) {
+    return this.price * p;
+  }
 }
