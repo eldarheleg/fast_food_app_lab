@@ -2,6 +2,7 @@ import 'package:fast_food_app_lab/city.dart';
 import 'package:fast_food_app_lab/food.dart';
 import 'package:fast_food_app_lab/widgets/basic_text.dart';
 import 'package:fast_food_app_lab/widgets/list_of_meals.dart';
+import 'package:fast_food_app_lab/widgets/meals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -70,58 +71,41 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: GestureDetector(
-        onTap: () {},
-        child: Scaffold(
-          body: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Image.asset("assets/Reklama.png"),
-                const BasicText(
-                  text: "Zaista Brzo",
-                  textStyle: TextStyle(fontSize: 22),
+      top: false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Image.asset("assets/Reklama.png"),
+              const BasicText(
+                text: "Zaista Brzo",
+                textStyle: TextStyle(fontSize: 22),
+              ),
+              const Positioned(
+                top: 20,
+                child: BasicText(
+                  text: "Narucivanje i dostava hrane",
+                  textStyle: TextStyle(fontSize: 32),
                 ),
-                const Positioned(
-                  top: 20,
-                  child: BasicText(
-                    text: "Narucivanje i dostava hrane",
-                    textStyle: TextStyle(fontSize: 32),
-                  ),
-                ),
-                Positioned(
-                  top: 350,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          color: Colors.white),
-                      child: Center(
-                        child: ListOfMeals(meals: meals),
-                      ),
+              ),
+              Meals(meals: meals),
+              Positioned(
+                bottom: 140,
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: 130,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey,
                     ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 50,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      height: 100,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                          color: Colors.green),
-                      child: Center(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           children: [
                             Row(
@@ -132,7 +116,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   height: 20,
                                   width: 20,
                                 ),
-                                Text("Dostava"),
+                                Text(
+                                  "Dostava",
+                                  style: TextStyle(fontSize: 22),
+                                ),
                                 Image.asset(
                                   "assets/zvjezda.png",
                                   height: 20,
@@ -141,24 +128,79 @@ class _MyHomePageState extends State<MyHomePage> {
                               ],
                             ),
                             Text("20 mins - Besplatna dostava iznad 15 KM"),
-                            Switch(
+                            SizedBox(
+                              height: 30,
+                              width: 20,
+                              child: Switch(
                                 value: isOff,
                                 onChanged: (value) {
-                                  setState(() {
-                                    isOff = value;
-                                  });
-                                })
+                                  setState(
+                                    () {
+                                      isOff = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Container(
+                                height: 40,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.grey.shade400),
+                                child: GestureDetector(
+                                  onTap: () => chooseCity(context, cities),
+                                  child: Center(
+                                      child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.search),
+                                      Text("Ulica,Naselje"),
+                                    ],
+                                  )),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  // chooseCity(List<City> cities) {
+  //   if (cities.isEmpty) {
+  //     return CircularProgressIndicator();
+  //   } else {
+  //     return ListView.builder(itemCount: cities.length,itemBuilder: (BuildContext context, int indx) {
+  //       return ListTile(title: cities[indx].name,);
+  //     });
+  //   }
+  // }
+}
+
+chooseCity(BuildContext context, List<City> cit) {
+  showDialog(
+    context: context,
+    builder: (_) => Container(
+      height: 400,
+      width: 300,
+      child: ListView.builder(
+        itemCount: cit.length,
+        itemBuilder: (context, index) {
+          return SimpleDialogOption(child: Center(child: Text(cit[index].name),),);
+        },
+      ),
+    ),
+  );
 }
