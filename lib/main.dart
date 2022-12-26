@@ -35,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isOff = false;
+  String? selected;
   List<Food> meals = [
     Food(
         name: "Burger",
@@ -72,185 +73,152 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Image.asset("assets/Reklama.png"),
-              const BasicText(
-                text: "Zaista Brzo",
-                textStyle: TextStyle(fontSize: 22),
-              ),
-              const Positioned(
-                top: 20,
-                child: BasicText(
-                  text: "Narucivanje i dostava hrane",
-                  textStyle: TextStyle(fontSize: 32),
+      child: GestureDetector(
+        onTap: ()=> FocusScope.of(context).requestFocus(FocusNode()),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Image.asset("assets/Reklama.png"),
+                const BasicText(
+                  text: "Zaista Brzo",
+                  textStyle: TextStyle(fontSize: 22),
                 ),
-              ),
-              Meals(meals: meals),
-              Positioned(
-                bottom: 140,
-                child: SingleChildScrollView(
-                  child: Container(
-                    height: 130,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey,
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "assets/zvjezda.png",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                Text(
-                                  "Dostava",
-                                  style: TextStyle(fontSize: 22),
-                                ),
-                                Image.asset(
-                                  "assets/zvjezda.png",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                              ],
-                            ),
-                            Text("20 mins - Besplatna dostava iznad 15 KM"),
-                            SizedBox(
-                              height: 30,
-                              width: 20,
-                              child: Switch(
-                                value: isOff,
-                                onChanged: (value) {
-                                  setState(
-                                    () {
-                                      isOff = value;
-                                    },
-                                  );
-                                },
+                const Positioned(
+                  top: 20,
+                  child: BasicText(
+                    text: "Narucivanje i dostava hrane",
+                    textStyle: TextStyle(fontSize: 32),
+                  ),
+                ),
+                Meals(meals: meals),
+                Positioned(
+                  bottom: 140,
+                  child: SingleChildScrollView(
+                    child: Container(
+                      height: 130,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.grey,
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    "assets/zvjezda.png",
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "Dostava",
+                                    style: TextStyle(fontSize: 22),
+                                  ),
+                                  Image.asset(
+                                    "assets/zvjezda.png",
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                ],
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Container(
-                                height: 40,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.grey.shade400),
+                              Text("20 mins - Besplatna dostava iznad 15 KM"),
+                              SizedBox(
+                                height: 30,
+                                width: 20,
+                                child: Switch(
+                                  value: isOff,
+                                  onChanged: (value) {
+                                    setState(
+                                      () {
+                                        isOff = value;
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: GestureDetector(
                                   onTap: () {
                                     showDialog(
                                         context: context,
                                         builder: (context) {
                                           return SimpleDialog(
-                                            children: [SizedBox(
-                                              height: 400,
-                                              width: 300,
-                                              child: ListView.builder(
-                                                  itemCount: cities.length,
-                                                  shrinkWrap: true,
-                                                  itemBuilder: (context, index) {
-                                                    return Center(
-                                                      child: ListTile(
-                                                        title:
-                                                            Text(cities[index].name),
-                                                      ),
-                                                    );
-                                                  }),
-                                            )],
+                                            children: [
+                                              SizedBox(
+                                                height: 400,
+                                                width: 300,
+                                                child: ListView.builder(
+                                                    itemCount: cities.length,
+                                                    shrinkWrap: true,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Center(
+                                                        child: ListTile(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              selected =
+                                                                cities[index]
+                                                                    .name;
+                                                            });
+                                                            
+                                                            Navigator.of(context)
+                                                                .pop();
+                                                            print(selected);
+                                                          },
+                                                          title: Text(
+                                                              cities[index].name),
+                                                        ),
+                                                      );
+                                                    }),
+                                              )
+                                            ],
                                           );
                                         });
                                   },
-                                  child: Center(
+                                  child: Container(
+                                    height: 40,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.grey.shade400),
+                                    child: Center(
                                       child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.search),
-                                      Text("Ulica,Naselje"),
-                                    ],
-                                  )),
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.search),
+                                          Text(selected == null
+                                              ? "Ulica,Naselje"
+                                              : selected!),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  // chooseCity(List<City> cities) {
-  //   if (cities.isEmpty) {
-  //     return CircularProgressIndicator();
-  //   } else {
-  //     return ListView.builder(itemCount: cities.length,itemBuilder: (BuildContext context, int indx) {
-  //       return ListTile(title: cities[indx].name,);
-  //     });
-  //   }
-  // }
-}
-
-// void showChooseCity(BuildContext context, List<City> cit) {
-//   SizedBox(
-//     height: 300,
-//     width: 400,
-//     child: showDialog(
-//       context: context,
-//       builder: (_) => SimpleDialog(
-//         title: Text("tittleee"),
-//         children: [
-
-//         ],
-//       ),
-//     ),
-//   );
-// }
-
-class ShowChooseCity extends StatefulWidget {
-  ShowChooseCity({super.key, required this.cit});
-  final List<City> cit;
-  @override
-  State<ShowChooseCity> createState() => _ShowChooseCityState();
-}
-
-class _ShowChooseCityState extends State<ShowChooseCity> {
-  @override
-  Widget build(BuildContext context) {
-    var cit;
-    return Center(
-      child: SimpleDialog(children: [
-        ListView.builder(
-          itemCount: cit.length,
-          itemBuilder: (context, index) {
-            return SimpleDialogOption(
-              child: Center(
-                child: Text(cit[index].name),
-              ),
-            );
-          },
-        ),
-      ]),
     );
   }
 }
