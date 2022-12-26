@@ -152,7 +152,29 @@ class _MyHomePageState extends State<MyHomePage> {
                                     borderRadius: BorderRadius.circular(20),
                                     color: Colors.grey.shade400),
                                 child: GestureDetector(
-                                  onTap: () => chooseCity(context, cities),
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return SimpleDialog(
+                                            children: [SizedBox(
+                                              height: 400,
+                                              width: 300,
+                                              child: ListView.builder(
+                                                  itemCount: cities.length,
+                                                  shrinkWrap: true,
+                                                  itemBuilder: (context, index) {
+                                                    return Center(
+                                                      child: ListTile(
+                                                        title:
+                                                            Text(cities[index].name),
+                                                      ),
+                                                    );
+                                                  }),
+                                            )],
+                                          );
+                                        });
+                                  },
                                   child: Center(
                                       child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -189,18 +211,46 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 }
 
-chooseCity(BuildContext context, List<City> cit) {
-  showDialog(
-    context: context,
-    builder: (_) => Container(
-      height: 400,
-      width: 300,
-      child: ListView.builder(
-        itemCount: cit.length,
-        itemBuilder: (context, index) {
-          return SimpleDialogOption(child: Center(child: Text(cit[index].name),),);
-        },
-      ),
-    ),
-  );
+// void showChooseCity(BuildContext context, List<City> cit) {
+//   SizedBox(
+//     height: 300,
+//     width: 400,
+//     child: showDialog(
+//       context: context,
+//       builder: (_) => SimpleDialog(
+//         title: Text("tittleee"),
+//         children: [
+
+//         ],
+//       ),
+//     ),
+//   );
+// }
+
+class ShowChooseCity extends StatefulWidget {
+  ShowChooseCity({super.key, required this.cit});
+  final List<City> cit;
+  @override
+  State<ShowChooseCity> createState() => _ShowChooseCityState();
+}
+
+class _ShowChooseCityState extends State<ShowChooseCity> {
+  @override
+  Widget build(BuildContext context) {
+    var cit;
+    return Center(
+      child: SimpleDialog(children: [
+        ListView.builder(
+          itemCount: cit.length,
+          itemBuilder: (context, index) {
+            return SimpleDialogOption(
+              child: Center(
+                child: Text(cit[index].name),
+              ),
+            );
+          },
+        ),
+      ]),
+    );
+  }
 }
