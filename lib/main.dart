@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       top: false,
       child: GestureDetector(
-        onTap: ()=> FocusScope.of(context).requestFocus(FocusNode()),
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SizedBox(
@@ -96,125 +96,154 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Meals(meals: meals),
+                OrderField(context),
                 Positioned(
-                  bottom: 140,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      height: 130,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey,
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
+                    bottom: 50,
+                    child: Center(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 20)),
+                          onPressed: () {
+                            meals.forEach((element) {
+                              print(element.controller.text);
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/zvjezda.png",
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    "Dostava",
-                                    style: TextStyle(fontSize: 22),
-                                  ),
-                                  Image.asset(
-                                    "assets/zvjezda.png",
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ],
+                              Text(
+                                "NARUCI",
+                                style: TextStyle(fontSize: 32),
                               ),
-                              Text("20 mins - Besplatna dostava iznad 15 KM"),
                               SizedBox(
-                                height: 30,
-                                width: 20,
-                                child: Switch(
-                                  value: isOff,
-                                  onChanged: (value) {
-                                    setState(
-                                      () {
-                                        isOff = value;
-                                      },
-                                    );
-                                  },
-                                ),
+                                width: 5,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return SimpleDialog(
-                                            children: [
-                                              SizedBox(
-                                                height: 400,
-                                                width: 300,
-                                                child: ListView.builder(
-                                                    itemCount: cities.length,
-                                                    shrinkWrap: true,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Center(
-                                                        child: ListTile(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              selected =
-                                                                cities[index]
-                                                                    .name;
-                                                            });
-                                                            
-                                                            Navigator.of(context)
-                                                                .pop();
-                                                            print(selected);
-                                                          },
-                                                          title: Text(
-                                                              cities[index].name),
-                                                        ),
-                                                      );
-                                                    }),
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.grey.shade400),
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.search),
-                                          Text(selected == null
-                                              ? "Ulica,Naselje"
-                                              : selected!),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              Icon(
+                                Icons.shopping_cart_rounded,
+                                color: Colors.amber,
                               )
+                            ],
+                          )),
+                    ))
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Positioned OrderField(BuildContext context) {
+    return Positioned(
+      bottom: 140,
+      child: SingleChildScrollView(
+        child: Container(
+          height: 130,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.grey,
+          ),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/zvjezda.png",
+                        height: 20,
+                        width: 20,
+                      ),
+                      Text(
+                        "Dostava",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      Image.asset(
+                        "assets/zvjezda.png",
+                        height: 20,
+                        width: 20,
+                      ),
+                    ],
+                  ),
+                  Text("20 mins - Besplatna dostava iznad 15 KM"),
+                  SizedBox(
+                    height: 30,
+                    width: 20,
+                    child: Switch(
+                      value: isOff,
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            isOff = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return SimpleDialog(
+                                children: [
+                                  SizedBox(
+                                    height: 400,
+                                    width: 300,
+                                    child: ListView.builder(
+                                        itemCount: cities.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return Center(
+                                            child: ListTile(
+                                              onTap: () {
+                                                setState(() {
+                                                  selected = cities[index].name;
+                                                });
+
+                                                Navigator.of(context).pop();
+                                                
+                                              },
+                                              title: Text(cities[index].name),
+                                            ),
+                                          );
+                                        }),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      child: Container(
+                        height: 40,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.grey.shade400),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.search),
+                              Text(selected == null
+                                  ? "Ulica,Naselje"
+                                  : selected!),
                             ],
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
